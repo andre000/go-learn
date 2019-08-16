@@ -2,15 +2,30 @@ package main
 
 import "fmt"
 
-const PREFIX = "Hello, "
+var PREFIX = map[string]string{
+	"EN": "Hello, ",
+	"PT": "Olá, ",
+	"FR": "Bonjour, ",
+}
 
-func Hello(name string) string {
-	if name == "" {
-		name = "Stranger"
+var DEFAULT = map[string]string{
+	"EN": "Stranger",
+	"PT": "Estranho",
+	"FR": "Étranger",
+}
+
+func Hello(name string, lang string) string {
+	if lang == "" {
+		lang = "EN"
 	}
-	return PREFIX + name + "!"
+
+	if name == "" {
+		name = DEFAULT[lang]
+	}
+
+	return PREFIX[lang] + name + "!"
 }
 
 func main() {
-	fmt.Println(Hello("Andre"))
+	fmt.Println(Hello("Andre", ""))
 }
