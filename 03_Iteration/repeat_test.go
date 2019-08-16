@@ -1,6 +1,10 @@
 package iteration
 
-import "testing"
+import (
+	"fmt"
+	"strings"
+	"testing"
+)
 
 func TestRepeat(t *testing.T) {
 	assert := func(t *testing.T, received string, expected string) {
@@ -10,9 +14,9 @@ func TestRepeat(t *testing.T) {
 		}
 	}
 
-	t.Run("should repeat the character 'a' fice times", func(t *testing.T) {
-		received := Repeat("a")
-		expected := "aaaaa"
+	t.Run("should repeat the character 'a' five times", func(t *testing.T) {
+		received := Repeat("a", 20)
+		expected := strings.Repeat("a", 20)
 
 		assert(t, received, expected)
 	})
@@ -20,6 +24,12 @@ func TestRepeat(t *testing.T) {
 
 func BenchmarkRepeat(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		Repeat("a")
+		Repeat("a", 5)
 	}
+}
+
+func ExampleRepeat() {
+	str := Repeat("Z", 3)
+	fmt.Printf(str)
+	// Output: ZZZ
 }

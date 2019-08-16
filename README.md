@@ -6,7 +6,7 @@ A Project with my learnings on go. With the [learn-go-with-tests](https://github
 
 - [x] Hello, world
 - [x] Integers
-- [ ] Iteration
+- [x] Iteration
 - [ ] Arrays and slices
 - [ ] Structs, methods & interfaces
 - [ ] Pointers & errors
