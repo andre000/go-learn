@@ -30,6 +30,6 @@ func BenchmarkRepeat(b *testing.B) {
 
 func ExampleRepeat() {
 	str := Repeat("Z", 3)
-	fmt.Printf(str)
+	fmt.Printf("%s", str)
 	// Output: ZZZ
 }
