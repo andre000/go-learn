@@ -8,7 +8,7 @@ A Project with my learnings on go. With the [learn-go-with-tests](https://github
 - [x] Integers
 - [x] Iteration
 - [x] Arrays and slices
-- [ ] Structs, methods & interfaces
+- [x] Structs, methods & interfaces
 - [ ] Pointers & errors
 - [ ] Maps
 - [ ] Dependency Injection
