@@ -24,13 +24,29 @@ func (d Dictionary) Add(key string, value string) error {
 	return nil
 }
 
-func (d Dictionary) Update(key string, value string) {
-	d[key] = value
+func (d Dictionary) Update(key string, value string) error {
+	_, err := d.Search(key)
+
+	switch err {
+	case ErrNotFound:
+		return ErrWordDoesNotExist
+	case nil:
+		d[key] = value
+	default:
+		return err
+	}
+
+	return nil
+}
+
+func (d Dictionary) Delete(key string) {
+	delete(d, key)
 }
 
 var (
-	ErrNotFound   = DictionaryErr("Word not found!")
-	ErrWordExists = DictionaryErr("Word already exists!")
+	ErrNotFound         = DictionaryErr("Word not found!")
+	ErrWordExists       = DictionaryErr("Word already exists!")
+	ErrWordDoesNotExist = DictionaryErr("Cannot update. Word doesn't exist.")
 )
 
 type DictionaryErr string

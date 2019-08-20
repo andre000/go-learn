@@ -25,7 +25,7 @@ func TestAdd(t *testing.T) {
 		dictionary := Dictionary{}
 		err := dictionary.Add("test", "this is just a test")
 
-		assertNotError(t, err)
+		assertNoError(t, err)
 		assertDefinition(t, dictionary, "test", "this is just a test")
 	})
 
@@ -46,9 +46,32 @@ func TestUpdate(t *testing.T) {
 	dictionary := Dictionary{word: definition}
 	newDefinition := "new definition"
 
-	dictionary.Update(word, newDefinition)
-	assertDefinition(t, dictionary, word, newDefinition)
+	t.Run("should be able to update an existing word", func(t *testing.T) {
+		err := dictionary.Update(word, newDefinition)
+		assertNoError(t, err)
+		assertDefinition(t, dictionary, word, newDefinition)
+	})
+
+	t.Run("should throw an error when updating a word that doesn't exist", func(t *testing.T) {
+		err := dictionary.Update("unknown", newDefinition)
+		assertError(t, err, ErrWordDoesNotExist)
+	})
 }
+
+func TestDelete(t *testing.T) {
+	word := "test"
+	definition := "this is just a test"
+	dictionary := Dictionary{word: definition}
+
+	t.Run("should be able to remove an existing word", func(t *testing.T) {
+		dictionary.Delete(word)
+		assertNotFound(t, dictionary, word)
+	})
+}
+
+/*
+	UTILS
+*/
 
 func assertString(t *testing.T, received string, expected string) {
 	t.Helper()
@@ -68,7 +91,7 @@ func assertError(t *testing.T, err error, expected error) {
 	}
 }
 
-func assertNotError(t *testing.T, err error) {
+func assertNoError(t *testing.T, err error) {
 	t.Helper()
 	if err != nil {
 		t.Errorf("❌ received error, expected none")
@@ -79,6 +102,14 @@ func assertDefinition(t *testing.T, dictionary Dictionary, key string, expected 
 	t.Helper()
 	received, err := dictionary.Search(key)
 
-	assertNotError(t, err)
+	assertNoError(t, err)
 	assertString(t, received, expected)
+}
+
+func assertNotFound(t *testing.T, dictionary Dictionary, key string) {
+	t.Helper()
+	_, err := dictionary.Search(key)
+	if err != ErrNotFound {
+		t.Errorf("❌ word %q has been found in the dictionary", key)
+	}
 }

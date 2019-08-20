@@ -10,7 +10,7 @@ A Project with my learnings on go. With the [learn-go-with-tests](https://github
 - [x] Arrays and slices
 - [x] Structs, methods & interfaces
 - [x] Pointers & errors
-- [ ] Maps
+- [x] Maps
 - [ ] Dependency Injection
 - [ ] Mocking
 - [ ] Concurrency
