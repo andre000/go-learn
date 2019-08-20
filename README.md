@@ -11,7 +11,7 @@ A Project with my learnings on go. With the [learn-go-with-tests](https://github
 - [x] Structs, methods & interfaces
 - [x] Pointers & errors
 - [x] Maps
-- [ ] Dependency Injection
+- [x] Dependency Injection
 - [ ] Mocking
 - [ ] Concurrency
 - [ ] Select
