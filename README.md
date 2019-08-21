@@ -12,7 +12,7 @@ A Project with my learnings on go. With the [learn-go-with-tests](https://github
 - [x] Pointers & errors
 - [x] Maps
 - [x] Dependency Injection
-- [ ] Mocking
+- [x] Mocking
 - [ ] Concurrency
 - [ ] Select
 - [ ] Reflection
