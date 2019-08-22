@@ -13,7 +13,7 @@ A Project with my learnings on go. With the [learn-go-with-tests](https://github
 - [x] Maps
 - [x] Dependency Injection
 - [x] Mocking
-- [ ] Concurrency
+- [x] Concurrency
 - [ ] Select
 - [ ] Reflection
 - [ ] Sync
