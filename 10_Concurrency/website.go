@@ -1,5 +1,6 @@
 package concurrency
 
+// WebsiteChecker type that return a bool
 type WebsiteChecker func(string) bool
 
 type result struct {
@@ -7,6 +8,7 @@ type result struct {
 	bool
 }
 
+// CheckWebsites return if a website online
 func CheckWebsites(wc WebsiteChecker, urls []string) map[string]bool {
 	results := make(map[string]bool)
 	resultChannel := make(chan result)

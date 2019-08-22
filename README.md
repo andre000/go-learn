@@ -1,4 +1,5 @@
 # go-learn 🐹
+[![go-learn](https://goreportcard.com/badge/github.com/andre000/go-learn)](https://goreportcard.com/report/github.com/andre000/go-learn#license)
 
 A Project with my learnings on go. With the [learn-go-with-tests](https://github.com/quii/learn-go-with-tests) as a guide.
 

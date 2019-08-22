@@ -2,28 +2,29 @@ package main
 
 import "fmt"
 
-var PREFIX = map[string]string{
+var prefix = map[string]string{
 	"EN": "Hello, ",
 	"PT": "Olá, ",
 	"FR": "Bonjour, ",
 }
 
-var DEFAULT = map[string]string{
+var defaultName = map[string]string{
 	"EN": "Stranger",
 	"PT": "Estranho",
 	"FR": "Étranger",
 }
 
+// Hello : returns the phrase "Hello, {name}" in the defined language
 func Hello(name string, lang string) string {
 	if lang == "" {
 		lang = "EN"
 	}
 
 	if name == "" {
-		name = DEFAULT[lang]
+		name = defaultName[lang]
 	}
 
-	return PREFIX[lang] + name + "!"
+	return prefix[lang] + name + "!"
 }
 
 func main() {
