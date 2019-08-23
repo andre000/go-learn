@@ -16,7 +16,7 @@ A Project with my learnings on go. With the [learn-go-with-tests](https://github
 - [x] Mocking
 - [x] Concurrency
 - [x] Select
-- [ ] Reflection
+- [x] Reflection
 - [ ] Sync
 - [ ] Context
 - [ ] Intro to property based tests
