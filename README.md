@@ -18,7 +18,7 @@ A Project with my learnings on go. With the [learn-go-with-tests](https://github
 - [x] Select
 - [x] Reflection
 - [x] Sync
-- [ ] Context
+- [x] Context
 - [ ] Intro to property based tests
 - [ ] Maths 
 
