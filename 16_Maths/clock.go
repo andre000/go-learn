@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// SVG struct for SVG
 type SVG struct {
 	XMLName xml.Name `xml:"svg"`
 	Text    string   `xml:",chardata"`
@@ -21,6 +22,7 @@ type SVG struct {
 	Line    []Line   `xml:"line"`
 }
 
+// Line struct for lines in SVG
 type Line struct {
 	X1 float64 `xml:"x1,attr"`
 	Y1 float64 `xml:"y1,attr"`
@@ -28,17 +30,20 @@ type Line struct {
 	Y2 float64 `xml:"y2,attr"`
 }
 
+// Circle struct for Circles in SVG
 type Circle struct {
 	Cx float64 `xml:"cx,attr"`
 	Cy float64 `xml:"cy,attr"`
 	R  float64 `xml:"r,attr"`
 }
 
+// SVGWriter writes a clock en SVG
 func SVGWriter(w io.Writer, t time.Time) error {
 	_, err1 := io.WriteString(w, svgStart)
 	_, err2 := io.WriteString(w, bezel)
 	secondHand(w, t)
 	minuteHand(w, t)
+	hourHand(w, t)
 	_, err3 := io.WriteString(w, svgEnd)
 
 	if err1 != nil || err2 != nil || err3 != nil {
@@ -48,6 +53,7 @@ func SVGWriter(w io.Writer, t time.Time) error {
 	return nil
 }
 
+// Point struct for coordinates
 type Point struct {
 	X float64
 	Y float64
@@ -56,8 +62,17 @@ type Point struct {
 const (
 	secondHandLength = 90
 	minuteHandLength = 80
+	hourHandLength   = 50
 	clockCentreX     = 150
 	clockCentreY     = 150
+)
+
+const (
+	secondsInHalfClock = 30
+	minutesInHalfClock = 30
+	minutesInClock     = 2 * minutesInHalfClock
+	hoursInHalfClock   = 6
+	hoursInClock       = 2 * hoursInHalfClock
 )
 
 func makeHand(p Point, length float64) Point {
@@ -76,12 +91,22 @@ func minuteHand(w io.Writer, t time.Time) {
 	fmt.Fprintf(w, `<line x1="150" y1="150" x2="%.3f" y2="%.3f" style="fill:none;stroke:#000;stroke-width:3px;"/>`, p.X, p.Y)
 }
 
+func hourHand(w io.Writer, t time.Time) {
+	p := makeHand(hourHandPoint(t), hourHandLength)
+	fmt.Fprintf(w, `<line x1="150" y1="150" x2="%.3f" y2="%.3f" style="fill:none;stroke:#000;stroke-width:3px;"/>`, p.X, p.Y)
+}
+
 func secondsInRadians(t time.Time) float64 {
-	return (math.Pi / (30 / (float64(t.Second()))))
+	return (math.Pi / (secondsInHalfClock / (float64(t.Second()))))
 }
 
 func minutesInRadians(t time.Time) float64 {
-	return (secondsInRadians(t) / 60) + (math.Pi / (30 / float64(t.Minute())))
+	return (secondsInRadians(t) / minutesInClock) + (math.Pi / (minutesInHalfClock / float64(t.Minute())))
+}
+
+func hoursInRadians(t time.Time) float64 {
+	return (minutesInRadians(t) / hoursInClock) +
+		(math.Pi / (hoursInHalfClock / float64(t.Hour()%hoursInClock)))
 }
 
 func angleToPoint(angle float64) Point {
@@ -96,6 +121,10 @@ func secondHandPoint(t time.Time) Point {
 
 func minuteHandPoint(t time.Time) Point {
 	return angleToPoint(minutesInRadians(t))
+}
+
+func hourHandPoint(t time.Time) Point {
+	return angleToPoint(hoursInRadians(t))
 }
 
 const svgStart = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>

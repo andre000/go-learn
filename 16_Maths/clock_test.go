@@ -25,7 +25,7 @@ func TestSecondsInRadians(t *testing.T) {
 			received := secondsInRadians(test.time)
 			expected := test.angle
 
-			if received != expected {
+			if !approximatedFloat64(received, expected) {
 				t.Fatalf("❌ expected %v received %v", expected, received)
 			}
 		})
@@ -47,7 +47,31 @@ func TestMinutesInRadians(t *testing.T) {
 			received := minutesInRadians(test.time)
 			expected := test.angle
 
-			if received != expected {
+			if !approximatedFloat64(received, expected) {
+				t.Fatalf("❌ expected %v received %v", expected, received)
+			}
+		})
+	}
+
+}
+
+func TestHoursInRadians(t *testing.T) {
+	cases := []struct {
+		time  time.Time
+		angle float64
+	}{
+		{simpleTime(6, 0, 0), math.Pi},
+		{simpleTime(0, 0, 0), 0},
+		{simpleTime(21, 0, 0), math.Pi * 1.5},
+		{simpleTime(0, 1, 30), math.Pi / ((6 * 60 * 60) / 90)},
+	}
+
+	for _, test := range cases {
+		t.Run("should be able to calculate the radians for "+formatDate(test.time), func(t *testing.T) {
+			received := hoursInRadians(test.time)
+			expected := test.angle
+
+			if !approximatedFloat64(received, expected) {
 				t.Fatalf("❌ expected %v received %v", expected, received)
 			}
 		})
@@ -89,6 +113,23 @@ func TestMinuteHandVector(t *testing.T) {
 	}
 }
 
+func TestHourHandVector(t *testing.T) {
+	cases := []struct {
+		time  time.Time
+		point Point
+	}{
+		{simpleTime(6, 0, 0), Point{0, -1}},
+		{simpleTime(21, 0, 0), Point{-1, 0}},
+	}
+
+	for _, test := range cases {
+		t.Run("should be able to calculate the point for "+formatDate(test.time), func(t *testing.T) {
+			received := hourHandPoint(test.time)
+			assertPoint(t, received, test.point)
+		})
+	}
+}
+
 func TestSVGWriterSecondHand(t *testing.T) {
 	cases := []struct {
 		time time.Time
@@ -123,7 +164,7 @@ func TestSVGWriterSecondHand(t *testing.T) {
 	}
 }
 
-func TestSVGWriterMinutedHand(t *testing.T) {
+func TestSVGWriterMinuteHand(t *testing.T) {
 	cases := []struct {
 		time time.Time
 		line Line
@@ -148,6 +189,36 @@ func TestSVGWriterMinutedHand(t *testing.T) {
 
 			if !containsLine(c.line, svg.Line) {
 				t.Errorf("Expected to find the minute hand line %+v, in the SVG lines %+v", c.line, svg.Line)
+			}
+		})
+	}
+}
+
+func TestSVGWriterHourHand(t *testing.T) {
+	cases := []struct {
+		time time.Time
+		line Line
+	}{
+		{
+			simpleTime(6, 0, 0),
+			Line{150, 150, 150, 200},
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(formatDate(c.time), func(t *testing.T) {
+			b := bytes.Buffer{}
+			errSVG := SVGWriter(&b, c.time)
+
+			svg := SVG{}
+			err := xml.Unmarshal(b.Bytes(), &svg)
+
+			if err != nil || errSVG != nil {
+				t.Errorf("❌ error while parsing XML")
+			}
+
+			if !containsLine(c.line, svg.Line) {
+				t.Errorf("Expected to find the hour hand line %+v, in the SVG lines %+v", c.line, svg.Line)
 			}
 		})
 	}

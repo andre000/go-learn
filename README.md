@@ -20,7 +20,7 @@ A Project with my learnings on go. With the [learn-go-with-tests](https://github
 - [x] Sync
 - [x] Context
 - [x] Intro to property based tests
-- [ ] Maths 
+- [x] Maths 
 
 ### Projects
 
